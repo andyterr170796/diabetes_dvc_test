@@ -13,12 +13,19 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 # =====================================================================
-# SIMULADOR / CONECTOR DE MLFLOW
+# CONFIGURACIÓN Y CONEXIÓN DE MLFLOW
 # =====================================================================
+MLFLOW_DB_URI = "sqlite:///mlflow.db"
+EXPERIMENT_NAME = "Diabetes_Prediction_and_Drift"
+
 try:
     import mlflow
+    mlflow.set_tracking_uri(MLFLOW_DB_URI)
+    mlflow.set_experiment(EXPERIMENT_NAME)
     logger_mlflow = mlflow
     MLFLOW_AVAILABLE = True
+    print(f"[MLflow INFO]: Conectado a Tracking URI: {MLFLOW_DB_URI}")
+    print(f"[MLflow INFO]: Experimento activo: '{EXPERIMENT_NAME}'")
 except ImportError:
     MLFLOW_AVAILABLE = False
     class MockMLflow:
@@ -136,14 +143,6 @@ with open(metrics_path, "w", encoding="utf-8") as f:
     json.dump(metrics, f, indent=4)
 print(f"    Métricas exportadas a '{metrics_path}'")
 
-# Registrar en MLflow
-with logger_mlflow.start_run(run_name="Entrenamiento_Pipeline_Diabetes"):
-    for param_name, param_val in hyperparameters.items():
-        logger_mlflow.log_param(param_name, param_val)
-    for metric_name, metric_val in metrics.items():
-        logger_mlflow.log_metric(metric_name, metric_val)
-
-
 # =====================================================================
 # FASE 4: SERIALIZACIÓN Y VERSIONADO DEL MODELO (DVC Model Store)
 # =====================================================================
@@ -157,6 +156,16 @@ print("    >> Recomendación DVC: Versiona el modelo pesado con:")
 print(f"       dvc add {model_path}")
 print(f"       git add {model_path}.dvc params.yaml metrics.json")
 print("       git commit -m 'feat: registrar modelo entrenado de diabetes'")
+
+# Registrar en MLflow (Parámetros, Métricas y Artefactos)
+with logger_mlflow.start_run(run_name="Entrenamiento_Pipeline_Diabetes"):
+    for param_name, param_val in hyperparameters.items():
+        logger_mlflow.log_param(param_name, param_val)
+    for metric_name, metric_val in metrics.items():
+        logger_mlflow.log_metric(metric_name, metric_val)
+    logger_mlflow.log_artifact(params_path)
+    logger_mlflow.log_artifact(metrics_path)
+    logger_mlflow.log_artifact(model_path)
 
 
 # =====================================================================
