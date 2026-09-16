@@ -53,62 +53,35 @@ Instala DVC en tu entorno virtual de Python:
 pip install dvc
 ```
 
-> **Nota:** Si el almacenamiento remoto utiliza un proveedor cloud específico, instala el complemento correspondiente:
-> - Para **Google Drive**: `pip install "dvc[gdrive]"`
-> - Para **AWS S3**: `pip install "dvc[s3]"`
-> - Para **Azure Blob**: `pip install "dvc[azure]"`
-> - Para **Google Cloud Storage**: `pip install "dvc[gs]"`
+### Paso 3: Configurar credenciales y descargar los datos (`dvc pull`)
+Como el almacenamiento remoto está alojado en **DAGsHub**, simplemente configura tus credenciales locales o usa tu token de lectura:
 
-### Paso 3: Descargar los datos con `dvc pull`
-Ejecuta el siguiente comando en la raíz del proyecto:
 ```bash
+# 1. Autenticar con tu usuario y token de DAGsHub (solo en la máquina local):
+dvc remote modify origin --local auth basic
+dvc remote modify origin --local user TU_USUARIO_O_EMAIL
+dvc remote modify origin --local password TU_DAGSHUB_TOKEN
+
+# 2. Descargar los datos:
 dvc pull
 ```
 
 **¿Qué ocurre internamente?**
 1. DVC lee el archivo `diabetes.csv.dvc`.
-2. Busca la clave hash MD5 registrada en el almacenamiento remoto configurado.
+2. Busca la clave hash MD5 registrada en el almacenamiento remoto de DAGsHub.
 3. Descarga el archivo exacto y lo coloca en tu directorio de trabajo con su nombre original: `diabetes.csv`.
 
 Una vez completado el comando, podrás ejecutar tus scripts normalmente (ej. `python 01_monitoreo_y_drift.py`).
 
 ---
 
-## ⚙️ Prerrequisito: Configurar el Almacenamiento Remoto (DVC Remote)
+## ⚙️ Almacenamiento Remoto Configurado (DAGsHub)
 
-Para que `dvc pull` funcione desde otra computadora, la persona administradora del repositorio debe haber configurado un **Remote Storage** y haber ejecutado `dvc push` previamente.
+El repositorio ya tiene configurado el remote oficial en **DAGsHub**:
+`https://dagshub.com/andyterr170796/diabetes_dvc_test.dvc`
 
-Aquí tienes los ejemplos más comunes:
-
-### Opción A: Google Drive (Ideal para clases y pruebas)
+Para subir nuevos datos desde la PC administradora una vez autenticado:
 ```bash
-# 1. Crear un remote apuntando al ID de una carpeta de Google Drive
-dvc remote add -d myremote gdrive://<ID_DE_TU_CARPETA_DE_DRIVE>
-
-# 2. Guardar la configuración en Git
-git add .dvc/config
-git commit -m "chore: configurar remote de Google Drive para DVC"
-git push origin main
-
-# 3. Subir el dataset al almacenamiento remoto
-dvc push
-```
-
-### Opción B: AWS S3 / Cloud Storage
-```bash
-# 1. Crear el remote en S3
-dvc remote add -d myremote s3://mi-bucket-mlops/dvc-storage
-
-# 2. Subir configuración y datos
-git add .dvc/config
-git commit -m "chore: configurar remote S3 para DVC"
-git push origin main
-dvc push
-```
-
-### Opción C: Almacenamiento local o en red (Pruebas en red local)
-```bash
-dvc remote add -d local_storage /ruta/compartida/dvc_cache
 dvc push
 ```
 
