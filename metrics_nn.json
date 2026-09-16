@@ -1,0 +1,19 @@
+{
+    "best_model": "Deep_BN_NN",
+    "metrics_comparison": {
+        "shallow_nn": {
+            "test_accuracy": 0.7273,
+            "test_precision": 0.62,
+            "test_recall": 0.5741,
+            "test_f1_score": 0.5962,
+            "test_roc_auc": 0.8028
+        },
+        "deep_bn_nn": {
+            "test_accuracy": 0.7597,
+            "test_precision": 0.6977,
+            "test_recall": 0.5556,
+            "test_f1_score": 0.6186,
+            "test_roc_auc": 0.8106
+        }
+    }
+}

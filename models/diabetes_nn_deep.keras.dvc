@@ -1,0 +1,5 @@
+outs:
+- md5: 0d23ec28f422adea980072c119b95119
+  size: 86019
+  hash: md5
+  path: diabetes_nn_deep.keras

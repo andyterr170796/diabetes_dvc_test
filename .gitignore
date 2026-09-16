@@ -2,3 +2,4 @@
 mlruns/
 mlflow.db
 __pycache__/
+wandb/

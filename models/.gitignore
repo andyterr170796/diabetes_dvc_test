@@ -1,1 +1,4 @@
 /diabetes_pipeline.joblib
+/diabetes_nn_shallow.keras
+/diabetes_nn_deep.keras
+/scaler_nn.joblib

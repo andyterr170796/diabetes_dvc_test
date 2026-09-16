@@ -1,0 +1,20 @@
+models:
+  deep_bn_nn:
+    architecture: Dense(64) -> BN -> Dropout(0.3) -> Dense(32) -> BN -> Dropout(0.2)
+      -> Dense(16) -> Dense(1)
+    batch_size: 16
+    dropout_1: 0.3
+    dropout_2: 0.2
+    epochs: 50
+    learning_rate: 0.001
+    model_name: Modelo_2_Deep_BatchNormalized_NN
+    optimizer: Adam
+  shallow_nn:
+    architecture: Dense(32, relu) -> Dropout(0.2) -> Dense(16, relu) -> Dense(1, sigmoid)
+    batch_size: 32
+    dropout: 0.2
+    epochs: 35
+    learning_rate: 0.005
+    model_name: Modelo_1_Shallow_NN
+    optimizer: Adam
+selected_model: Deep_BN_NN
