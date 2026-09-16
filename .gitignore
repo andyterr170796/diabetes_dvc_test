@@ -1,1 +1,3 @@
 /diabetes.csv
+mlruns/
+__pycache__/

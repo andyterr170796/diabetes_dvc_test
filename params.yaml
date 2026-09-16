@@ -1,0 +1,8 @@
+train:
+  criterion: gini
+  max_depth: 6
+  min_samples_leaf: 2
+  min_samples_split: 5
+  model_type: RandomForestClassifier
+  n_estimators: 120
+  random_state: 42

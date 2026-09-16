@@ -1,0 +1,5 @@
+outs:
+- md5: 212a7d49f4e7b5df1b367bce553949c6
+  size: 699442
+  hash: md5
+  path: diabetes_pipeline.joblib
