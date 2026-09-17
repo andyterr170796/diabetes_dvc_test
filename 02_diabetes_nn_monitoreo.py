@@ -383,7 +383,11 @@ print("[5] RESUMEN DE EXPERIMENTACIÓN Y ACCESO AL DASHBOARD DE W&B")
 print("="*65)
 
 if WANDB_MODE == "online":
-    project_url = f"https://wandb.ai/{wandb.api.default_entity}/{WANDB_PROJECT}"
+    try:
+        entity = wandb.Api().default_entity
+    except Exception:
+        entity = getattr(wandb.api, "default_entity", "andyterr170796-universidad-nacional-del-callao")
+    project_url = f"https://wandb.ai/{entity}/{WANDB_PROJECT}"
     print(f"\n[DASHBOARD]: Dashboard de Weights & Biases en la Nube:")
     print(f"   -> URL del Proyecto: {project_url}")
     print("   Abriendo la interfaz en tu navegador web...")
